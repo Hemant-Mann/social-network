@@ -11,6 +11,16 @@ $routes = array(
         "pattern" => "user/login",
         "controller" => "users",
         "action" => "login"
+    ),
+    array(
+        "pattern" => "user/search",
+        "controller" => "users",
+        "action" => "search"
+    ),
+    array(
+        "pattern" => "user/profile",
+        "controller" => "users",
+        "action" => "profile"
     )
 );
 
