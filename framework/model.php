@@ -1,4 +1,5 @@
 <?php
+
 namespace Framework {
     use Framework\Base as Base;
     use Framework\Registry as Registry;
@@ -432,13 +433,11 @@ namespace Framework {
                             
                             $message = $template["message"];
                             
-                            foreach ($replacements as $i => $replacement)
-                            {
+                            foreach ($replacements as $i => $replacement) {
                                 $message = str_replace("{{$i}}", $replacement, $message);
                             }
                             
-                            if (!isset($this->_errors[$name]))
-                            {
+                            if (!isset($this->_errors[$name])) {
                                 $this->_errors[$name] = array();
                             }
                             

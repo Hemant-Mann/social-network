@@ -47,6 +47,8 @@ namespace Shared {
                 $this->setCreated(date("Y-m-d H:i:s"));
                 $this->setDeleted(false);
                 $this->setLive(true);
+            } else {
+                $this->setLive(true);
             }
 
             $this->setModified(date("Y-m-d H:i:s"));

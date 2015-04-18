@@ -66,7 +66,7 @@ namespace Framework {
             
             $doAction = $this->getWillRenderActionView() && $this->getActionView();
             $doLayout = $this->getWillRenderLayoutView() && $this->getLayoutView();
-            
+
             try {
                 if ($doAction) {
                     $view = $this->getActionView();
