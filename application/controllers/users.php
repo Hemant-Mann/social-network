@@ -167,7 +167,7 @@ class Users extends Controller {
         $session = Registry::get("session");
         $session->erase("user");
 
-        header("Location: /social-network/user/login");
+        header("Location: /social-network/login");
         exit();
     }
 
@@ -177,13 +177,25 @@ class Users extends Controller {
     public function friend($id) {
         $user = $this->getUser();
 
-        $friend = new Friend([
-            "user" => $user->id,
-            "friend" => $id
+        $friend = Friend::first([
+            "user = ?" => $user->id,
+            "friend = ?" => $id,
+            "live = ?" => false,
+            "deleted = ?" => true
         ]);
 
+        if(!$friend) {
+            $friend = new Friend([
+                "user" => $user->id,
+                "friend" => $id
+            ]);
+        } else {
+            $friend->live = true;
+            $friend->deleted = false;
+        }
+
         $friend->save();
-        //header("Location: /social-network/search");
+        header("Location: /social-network/search");
         exit();
     }
 
@@ -194,15 +206,15 @@ class Users extends Controller {
         $user = $this->getUser();
 
         $friend = Friend::first([
-            "user" => $user->id,
-            "friend" => $id
+            "user = ?" => $user->id,
+            "friend = ?" => $id,
+            "live = ?" => true
         ]);
 
         if ($friend) {
-            $friend = new Friend([
-                "id" => $friend->id
-            ]);
-            $friend->delete();
+            $friend->live = NULL;
+            $friend->deleted = true;
+            $friend->save();
         }
         header("Location: /social-network/search");
         exit();

@@ -58,10 +58,12 @@ class User extends Shared\Model {
 
     public function isFriend($id) {
         $friend = Friend::first([
-            "user" => $this->getId(),
-            "friend" => $id
+            "user = ?" => $this->getId(),
+            "friend = ?" => $id,
+            "live = ?" => true
         ]);
-        if ($friend) {
+        
+        if (!empty($friend)) {
             return true;
         }
         return false;
