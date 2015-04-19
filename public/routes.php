@@ -3,35 +3,48 @@
 // define routes
 $routes = array(
     array(
-        "pattern" => "user/register",
+        "pattern" => "register",
         "controller" => "users",
         "action" => "register"
     ),
     array(
-        "pattern" => "user/login",
+        "pattern" => "login/?",
         "controller" => "users",
-        "action" => "login"
+        "action" => "login",
+        "parameters" => array("id")
     ),
     array(
-        "pattern" => "user/logout",
+        "pattern" => "logout",
         "controller" => "users",
         "action" => "logout"
     ),
     array(
-        "pattern" => "user/search",
+        "pattern" => "search",
         "controller" => "users",
         "action" => "search"
     ),
     array(
-        "pattern" => "user/profile",
+        "pattern" => "profile",
         "controller" => "users",
         "action" => "profile"
     ),
     array(
-        "pattern" => "user/settings",
+        "pattern" => "settings",
         "controller" => "users",
         "action" => "settings"
     ),
+    array(
+        "pattern" => "unfriend/?",
+        "controller" => "users",
+        "action" => "friend",
+        "parameters" => array("id")
+    ),
+    array(
+        "pattern" => "friend/?",
+        "controller" => "users",
+        "action" => "friend",
+        "parameters" => array("id")
+    )
 );
 
 // add defined routes

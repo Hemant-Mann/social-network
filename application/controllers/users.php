@@ -60,7 +60,7 @@ class Users extends Controller {
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
                     
-                    header("Location: /social-network/user/profile");
+                    header("Location: /social-network/profile");
                     exit();
                 } else {
                     $view->set("password_error", "Email address and/or password are incorrect");
@@ -69,6 +69,9 @@ class Users extends Controller {
         }
     }
 
+    /**
+    * @before _secure
+    */
     public function profile() {
         $session = Registry::get("session");        
         $person = unserialize($session->get("user"));
@@ -82,6 +85,9 @@ class Users extends Controller {
         $this->getActionView()->set("person", $person);
     }
 
+    /**
+    * @before _secure
+    */
     public function settings() {
         $session = Registry::get("session");        
         $person = unserialize($session->get("user"));
@@ -116,6 +122,9 @@ class Users extends Controller {
         $view->set("person", $person);
     }
 
+    /**
+    * @before _secure
+    */
     public function search() {
         $view = $this->getActionView();
 
@@ -160,6 +169,54 @@ class Users extends Controller {
 
         header("Location: /social-network/user/login");
         exit();
+    }
+
+    /**
+    * @before _secure
+    */
+    public function friend($id) {
+        $user = $this->getUser();
+
+        $friend = new Friend([
+            "user" => $user->id,
+            "friend" => $id
+        ]);
+
+        $friend->save();
+        //header("Location: /social-network/search");
+        exit();
+    }
+
+    /**
+    * @before _secure
+    */
+    public function unfriend($id) {
+        $user = $this->getUser();
+
+        $friend = Friend::first([
+            "user" => $user->id,
+            "friend" => $id
+        ]);
+
+        if ($friend) {
+            $friend = new Friend([
+                "id" => $friend->id
+            ]);
+            $friend->delete();
+        }
+        header("Location: /social-network/search");
+        exit();
+    }
+
+    /**
+    * @protected
+    */
+    public function _secure() {
+        $user = $this->getUser();
+        if(!$user) {
+            header("Location: /social-network/login");
+            exit();
+        }
     }
 }
 ?>

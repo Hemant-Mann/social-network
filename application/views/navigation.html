@@ -1,13 +1,13 @@
 <h2>Navigation:</h2>
 <ul>
 {if (isset($user))}
-    <li><a href="/social-network/user/profile.html">Profile</a></li><br />
-    <li><a href="/social-network/user/settings.html">Settings</a></li><br />
-    <li><a href="/social-network/user/search.html">Search</a></li><br />
-    <li><a href="/social-network/user/logout.html">Logout</a></li><br />
+    <li><a href="/social-network/profile">Profile</a></li><br />
+    <li><a href="/social-network/settings">Settings</a></li><br />
+    <li><a href="/social-network/search">Search</a></li><br />
+    <li><a href="/social-network/logout">Logout</a></li><br />
 {/if}
 {else}
-    <li><a href="/social-network/users/register.html">Register</a></li><br />
-    <li><a href="/social-network/users/login.html">Login</a></li><br />
+    <li><a href="/social-network/register">Register</a></li><br />
+    <li><a href="/social-network/login">Login</a></li><br />
 {/else}
 </ul>

@@ -55,4 +55,22 @@ class User extends Shared\Model {
     * @index
     */
     protected $_notes;
+
+    public function isFriend($id) {
+        $friend = Friend::first([
+            "user" => $this->getId(),
+            "friend" => $id
+        ]);
+        if ($friend) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static function hasFriend($id, $friend) {
+        $user = new self([
+            "id" => $id
+        ]);
+        return $user->isFriend($friend);
+    }
 }
