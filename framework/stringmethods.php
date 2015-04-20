@@ -159,7 +159,7 @@ namespace Framework {
             return $result;
         }
         
-        function plural($string) {
+        public static function plural($string) {
             $result = $string;
             
             foreach (self::$_plural as $rule => $replacement) {
@@ -173,6 +173,15 @@ namespace Framework {
             
             return $result;
         }
-    }    
+
+        public static function datetime_to_text($datetime="") {
+            if ($datetime == '0000-00-00 00:00:00') {
+                return "Not Specified";
+            } else {
+                $unixdatetme = strtotime($datetime);
+                return strftime("%B %d, %Y at %I:%M %p", $unixdatetme);
+            }
+        }
+    }   
 }
 ?>

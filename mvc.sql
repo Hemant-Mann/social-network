@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2015 at 05:10 PM
+-- Generation Time: Apr 20, 2015 at 06:58 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `friend` (
   KEY `deleted` (`deleted`),
   KEY `friend` (`friend`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `friend`
@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS `friend` (
 
 INSERT INTO `friend` (`id`, `friend`, `user`, `live`, `deleted`, `created`, `modified`) VALUES
 (8, 5, 2, 1, 0, '2015-04-19 22:08:52', '2015-04-19 22:08:52'),
-(9, 7, 2, 1, 0, '2015-04-19 22:25:02', '2015-04-19 22:55:30');
+(9, 7, 2, 1, 0, '2015-04-19 22:25:02', '2015-04-19 22:55:30'),
+(10, 2, 7, 1, 0, '2015-04-20 18:55:34', '2015-04-20 18:55:34');
 
 -- --------------------------------------------------------
 
@@ -67,17 +68,21 @@ CREATE TABLE IF NOT EXISTS `message` (
   PRIMARY KEY (`id`),
   KEY `live` (`live`),
   KEY `deleted` (`deleted`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `message`
 --
 
 INSERT INTO `message` (`id`, `user`, `message`, `body`, `live`, `deleted`, `created`, `modified`) VALUES
-(1, 2, 1, 'Hello this is my first message', 1, 0, '2015-04-20 00:00:00', '2015-04-20 00:15:00'),
-(2, 2, 0, 'hey there', 1, 0, '2015-04-20 00:18:05', '2015-04-20 00:18:05'),
-(3, 7, 0, 'i m prakhar', 1, 0, '2015-04-20 00:28:00', '2015-04-20 00:29:00'),
-(4, 7, 0, 'hello world', 1, 0, '2015-04-20 00:24:17', '2015-04-20 00:24:17');
+(1, 7, 0, 'Hello I am Prakhar', 1, 0, '2015-04-20 00:00:00', '2015-04-20 00:15:00'),
+(2, 5, 0, 'Hey this is a test message', 1, 0, '2015-04-20 00:18:05', '2015-04-20 00:18:05'),
+(5, 2, 0, 'I am Hemant', 1, 0, '2015-04-20 17:59:37', '2015-04-20 17:59:37'),
+(6, 2, 1, 'Ok got it Prakhar', 1, 0, '2015-04-20 18:47:30', '2015-04-20 18:47:30'),
+(7, 2, 1, 'This is second comment on Prakhar status', 1, 0, '2015-04-20 18:48:13', '2015-04-20 18:48:13'),
+(8, 2, 2, 'This is a test comment on test user''s status', 1, 0, '2015-04-20 18:49:37', '2015-04-20 18:49:37'),
+(9, 7, 5, 'Hey It is Prakhar', 1, 0, '2015-04-20 18:56:39', '2015-04-20 18:56:39'),
+(10, 7, 6, 'Same Here', 1, 0, '2015-04-20 18:56:50', '2015-04-20 18:56:50');
 
 -- --------------------------------------------------------
 

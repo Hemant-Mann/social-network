@@ -34,7 +34,7 @@ class Message extends Shared\Model {
 		);
 	}
 
-	public static function fetchReplies() {
+	public static function fetchReplies($id) {
 		$message = new Message([
 				"id" => $id
 			]

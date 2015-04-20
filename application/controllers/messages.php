@@ -16,7 +16,7 @@ class Messages extends Controller {
 
 			if ($message->validate()) {
 				$message->save();
-				header("Location: /social-network");
+				header("Location: /social-network/home");
 				exit();
 			}
 		}

@@ -1,6 +1,8 @@
 <?php
-
-use Framework\Controller as Controller;
+use Shared\Controller as Controller;
+use Framework\ArrayMethods as ArrayMethods;
+use Framework\Registry as Registry;
+use Framework\StringMethods as StringMethods;
 
 class Home extends Controller {
     public function index() {
@@ -21,15 +23,31 @@ class Home extends Controller {
         		$ids[] = $friend->friend;
         	}
 
-        	$messages = Message::all([
+        	$findMessages = Message::all([
 	        		"user in ?" => $ids,
 	        		"live = ?" => true,
 	        		"deleted = ?" => false
-        		],[
-        			"*",
-        			"(SELECT CONCAT(first, \"\", last) FROM user WHERE user.id = message.user)" => "user_name"
-        		], "created", "asc"
+        		],["*"], "created", "asc"
         	);
+
+            $messages = [];
+            foreach ($findMessages as $msg) {
+                 $user = User::first([
+                        "id = ?" => $msg->user
+                    ], ["first", "last"]
+                );
+
+                 $messages[] = [
+                    "id" => $msg->id,
+                    "user" => $msg->user,
+                    "by" => $user->first. " ". $user->last,
+                    "body" => $msg->body,
+                    "created" => $msg->created,
+                    "modified" => $msg->modified
+                 ];
+            }
+
+            $view->set("messages", ArrayMethods::toObject($messages));
         }
     }
 }
