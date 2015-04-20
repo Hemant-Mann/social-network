@@ -17,17 +17,16 @@ class Users extends Controller {
                 "password" => RequestMethods::post("password")
             ]);
 
-
             if ($user->validate()) {
                 $user->save();
+                $this->_upload("photo", $user->id);
                 $view->set("success", true);
             } else {
                 $view->set("errors", $user->getErrors());
             }
         } else {
             $view->set("errors", NULL);
-        }
-        
+        }   
     }
 
     public function login() {
@@ -53,7 +52,6 @@ class Users extends Controller {
                         "email = ?" => $email,
                         "password = ?" => $password,
                         "live = ?" => true,
-                        "deleted = ?" => false
                     ));
 
                 if (!empty($user)) {
@@ -92,13 +90,14 @@ class Users extends Controller {
         $session = Registry::get("session");        
         $person = unserialize($session->get("user"));
         $view = $this->getActionView();
-        
+        $view->set("errors", NULL);
+
         if (RequestMethods::post("update")) {
             $updateUser = new User([
                 "id" => $person->id,
                 "created" => $person->created,
                 "notes" => $person->notes,
-                "deleted" => $person->deleted,
+                "live" => true,
                 "first" => RequestMethods::post("first", $person->first),
                 "last" => RequestMethods::post("last", $person->last),
                 "email" => RequestMethods::post("email", $person->email),
@@ -111,14 +110,14 @@ class Users extends Controller {
                 $person->last = $updateUser->last;
                 $person->email = $updateUser->email;
                 $person->password = $updateUser->password;
+                $this->_upload("photo", $person->id);
                 $session->set("user", serialize($person));
                 $view->set("success", true);
             } else {
                 $view->set("errors", $updateUser->getErrors());
             }
-        } else {
-            $view->set("errors", NULL);
         }
+        
         $view->set("person", $person);
     }
 
@@ -141,7 +140,6 @@ class Users extends Controller {
             $where = [
                 "SOUNDEX(first) = SOUNDEX(?)" => $query,
                 "live = ?" => true,
-                "deleted = ?" => false
             ];
 
             $fields = [
@@ -177,24 +175,25 @@ class Users extends Controller {
     public function friend($id) {
         $user = $this->getUser();
 
+        // Check if the person was unfriended before
         $friend = Friend::first([
             "user = ?" => $user->id,
             "friend = ?" => $id,
-            "live = ?" => false,
             "deleted = ?" => true
         ]);
 
+        // If not then add a new entry in friend's table
         if(!$friend) {
             $friend = new Friend([
                 "user" => $user->id,
                 "friend" => $id
             ]);
         } else {
-            $friend->live = true;
+            // set the deleted to false
             $friend->deleted = false;
         }
 
-        $friend->save();
+        $friend->save();    // save the entry whether UPDATE/INSERT in the db
         header("Location: /social-network/search");
         exit();
     }
@@ -212,7 +211,7 @@ class Users extends Controller {
         ]);
 
         if ($friend) {
-            $friend->live = NULL;
+            // Just set the deleted attribute of the friend to false
             $friend->deleted = true;
             $friend->save();
         }
@@ -228,6 +227,49 @@ class Users extends Controller {
         if(!$user) {
             header("Location: /social-network/login");
             exit();
+        }
+    }
+
+    protected function _upload($name, $user) {
+        if (isset($_FILES[$name]) && !empty($_FILES[$name]['name'])) {
+            $file = $_FILES[$name];
+            $path = APP_PATH."/public/uploads/";
+
+            $time = time();
+            $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
+            $filename = "{$user}-{$time}.{$extension}";
+
+            if (move_uploaded_file($file["tmp_name"], $path.$filename)) {
+                $meta = getimagesize($path.$filename);
+
+                if ($meta) {
+                    $width = $meta[0];
+                    $height = $meta[1];
+
+                    $findFile = File::first([
+                            "user" => $user,
+                            "live" => true
+                        ]);
+
+                    // If pic is found then set deleted attribute to true
+                    if($findFile) {
+                        $findFile->deleted = true;
+                        $findFile->save();
+                    }
+
+                    $newFile = new File([
+                        "name" => $filename,
+                        "mime" => $file["type"],
+                        "size" => $file["size"],
+                        "width" => $width,
+                        "height" => $height,
+                        "user" => $user
+                    ]);
+                    $newFile->save();
+                }
+            } else {
+                throw new Exception("Error in moving uploaded file", 1);  
+            }
         }
     }
 }

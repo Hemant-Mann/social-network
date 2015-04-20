@@ -63,15 +63,16 @@
         <tr>
             <th>Name</th>
         </tr>
-        {foreach $row in $users}
+        {foreach $_user in $users}
             <tr>
-                <td>{echo $row->first} {echo $row->last}</td>
+                <td>{if $file}<img src="/social-network/uploads/{echo $file->name}" />{/if}</td>
+                <td>{echo $_user->first} {echo $_user->last}</td>
                 <td>
-                    {if User::hasFriend($user->id, $row->id)}
-                        <a href="/social-network/users/unfriend/{echo $row->id}.html">unfriend</a>
+                    {if User::isFriend($user->id)}
+                        <a href="/social-network/users/unfriend/{echo $_user->id}.html">unfriend</a>
                     {/if}
                     {else}
-                        <a href="/social-network/users/friend/{echo $row->id}.html">friend</a>
+                        <a href="/social-network/users/friend/{echo $_user->id}.html">friend</a>
                     {/else}
                 </td>
             </tr>

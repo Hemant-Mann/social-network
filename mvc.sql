@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2015 at 06:58 PM
+-- Generation Time: Apr 21, 2015 at 12:05 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -19,6 +19,37 @@ SET time_zone = "+00:00";
 --
 -- Database: `mvc`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `file`
+--
+
+CREATE TABLE IF NOT EXISTS `file` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `mime` varchar(32) DEFAULT NULL,
+  `size` int(11) DEFAULT NULL,
+  `width` int(11) DEFAULT NULL,
+  `height` int(11) DEFAULT NULL,
+  `live` tinyint(4) DEFAULT NULL,
+  `deleted` tinyint(4) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `live` (`live`),
+  KEY `deleted` (`deleted`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `file`
+--
+
+INSERT INTO `file` (`id`, `user`, `name`, `mime`, `size`, `width`, `height`, `live`, `deleted`, `created`, `modified`) VALUES
+(1, 2, '2-1429549642.jpg', 'image/jpeg', 104740, 773, 960, 0, 1, '2015-04-20 22:37:22', '2015-04-20 23:59:59'),
+(2, 2, '2-1429548547.jpg', 'image/jpeg', 45366, 310, 325, 1, 0, '2015-04-20 22:19:07', '2015-04-20 22:37:22');
 
 -- --------------------------------------------------------
 
@@ -113,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `first`, `last`, `email`, `password`, `notes`, `live`, `deleted`, `created`, `modified`) VALUES
-(2, 'Hemant', 'Mann', 'hemant@gmail.com', 'hemantmann', NULL, 1, 0, '2015-04-18 12:39:40', '2015-04-18 20:11:03'),
+(2, 'Hemant', 'Mann', 'hemant@gmail.com', 'hemantmann', NULL, 1, 0, '2015-04-18 12:39:40', '2015-04-20 23:59:59'),
 (5, 'Test', 'User', 'test@yahoo.in', 'abcdefgh', NULL, 1, 0, '2015-04-18 12:00:04', '2015-04-18 13:35:03'),
 (7, 'Prakhar', 'Sandhu', 'prakhar@outlook.com', 'abcdefgh', NULL, 1, 0, '2015-04-18 21:08:21', '2015-04-18 21:08:21');
 
