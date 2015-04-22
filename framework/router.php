@@ -63,14 +63,18 @@ namespace Framework {
             $this->_controller = $controller;
             $this->_action = $action;
             
+            //Events::fire("framework.router.controller.before", [$controller, $parameters]);
             try {
                 $instance = new $name(array(
                     "parameters" => $parameters
                 ));
+
                 Registry::set("controller", $instance);
             } catch (\Exception $e) {
                 throw new Exception\Controller("Controller {$name} not found");
             }
+
+            //Events::fire("framework.router.controller.after", [$controller, $parameters]);
             
             if (!method_exists($instance, $action)) {
                 $instance->willRenderLayoutView = false;
@@ -102,6 +106,8 @@ namespace Framework {
                     }
                 }
             };
+
+            //Events::fire("framework.router.beforehooks.before", [$action, $parameters]);
             
             $hooks($methodMeta, "@before");
             
@@ -109,8 +115,13 @@ namespace Framework {
                 $instance,
                 $action
             ), is_array($parameters) ? $parameters : array());
+
+            //Events::fire("framework.router.beforehooks.after", [$action, $parameters]);
+            //Events::fire("framework.router.action.before", [$action, $parameters]);
             
             $hooks($methodMeta, "@after");
+
+            //Events::fire("framework.router.afterhooks.after", [$action, $parameters]);
             
             // unset controller
             
@@ -122,6 +133,8 @@ namespace Framework {
             $parameters = array();
             $controller = "index";
             $action = "index";
+
+            //Events::fire("framework.router.dispatch.before", [$url]);
         
             foreach ($this->_routes as $route) {
                 $matches = $route->matches($url);
@@ -130,6 +143,7 @@ namespace Framework {
                     $action = $route->action;
                     $parameters = $route->parameters;
                     
+                    //Events::fire("framework.router.dispatch.after", [$url, $controller, $action, $parameters]);
                     $this->_pass($controller, $action, $parameters);
                     return;
                 }
@@ -145,7 +159,8 @@ namespace Framework {
                     $parameters = array_slice($parts, 2);
                 }
             }
-            
+
+            //Events::fire("framework.router.dispatch.after", [$url, $controller, $action, $parameters]);
             $this->_pass($controller, $action, $parameters);
         }
     }

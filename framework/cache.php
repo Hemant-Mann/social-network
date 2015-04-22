@@ -22,6 +22,7 @@ namespace Framework {
         }
         
         public function initialize() {
+            Events::fire("framework.cache.initialize.before", [$this->type, $this->options]);
             if (!$this->type) {
                 $configuration = Registry::get("configuration");
                 
@@ -41,6 +42,7 @@ namespace Framework {
                 throw new Exception\Argument("Invalid type");
             }
             
+            Events::fire("framework.cache.initialize.after", [$this->type, $this->options]);
             switch ($this->type) {
                 case "memcached": {
                     return new Cache\Driver\Memcached($this->options);

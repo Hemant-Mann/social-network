@@ -62,13 +62,23 @@
     <table>
         <tr>
             <th>Name</th>
+            <th>Photo</th>
+            <th>&nbsp;</th>
         </tr>
         {foreach $_user in $users}
             <tr>
-                <td>{if $file}<img src="/social-network/uploads/{echo $file->name}" />{/if}</td>
                 <td>{echo $_user->first} {echo $_user->last}</td>
+                {script $file = $_user->file}
                 <td>
-                    {if User::isFriend($user->id)}
+                    {if isset($file)}
+                        <img src="/social-network/uploads/{echo $file->name}" />
+                    {/if}
+                    {else}
+                        No Image Available
+                    {/else}
+                </td>
+                <td>
+                    {if User::hasFriend($user->id, $_user->id)}
                         <a href="/social-network/users/unfriend/{echo $_user->id}.html">unfriend</a>
                     {/if}
                     {else}

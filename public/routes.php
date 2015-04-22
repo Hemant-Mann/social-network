@@ -1,56 +1,66 @@
 <?php
 
 // define routes
-$routes = array(
-    array(
+$routes =  [
+    [
         "pattern" => "register",
         "controller" => "users",
         "action" => "register"
-    ),
-    array(
+    ],
+    [
         "pattern" => "home",
         "controller" => "home",
         "action" => "index"
-    ),
-    array(
+    ],
+    [
         "pattern" => "login/?",
         "controller" => "users",
         "action" => "login",
-        "parameters" => array("id")
-    ),
-    array(
+        "parameters" => ["id"]
+    ],
+    [
         "pattern" => "logout",
         "controller" => "users",
         "action" => "logout"
-    ),
-    array(
+    ],
+    [
         "pattern" => "search",
         "controller" => "users",
         "action" => "search"
-    ),
-    array(
+    ],
+    [
         "pattern" => "profile",
         "controller" => "users",
         "action" => "profile"
-    ),
-    array(
+    ],
+    [
         "pattern" => "settings",
         "controller" => "users",
         "action" => "settings"
-    ),
-    array(
+    ],
+    [
         "pattern" => "unfriend/?",
         "controller" => "users",
         "action" => "friend",
-        "parameters" => array("id")
-    ),
-    array(
+        "parameters" => ["id"]
+    ],
+    [
         "pattern" => "friend/?",
         "controller" => "users",
         "action" => "friend",
-        "parameters" => array("id")
-    )
-);
+        "parameters" => ["id"]
+    ],
+    [
+        "pattern" => "fonts/:id",
+        "controller" => "files",
+        "action" => "fonts"
+    ],
+    [
+        "pattern" => "thumbnails/:id",
+        "controller" => "files",
+        "action" => "thumbnails"
+    ]
+ ];
 
 // add defined routes
 foreach ($routes as $route) {

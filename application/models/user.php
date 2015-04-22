@@ -1,5 +1,4 @@
 <?php
-
 class User extends Shared\Model {  
     /**
     * @column
@@ -85,3 +84,4 @@ class User extends Shared\Model {
         );
     }
 }
+?>

@@ -70,6 +70,8 @@ namespace Framework {
 		}
 
 		function request($method, $url, $parameters = []) {
+			Events::fire("framework.request.request.before", [$method, $url, $parameters]);
+
 			$request = $this->_request = curl_init();
 
 			if (is_array($parameters)) {
@@ -89,6 +91,8 @@ namespace Framework {
 			} else {
 			 	throw new Exception\Response(curl_errno($request).'-'.curl_error($request));
 			}
+
+			Events::fire("framework.request.request.after", [$method, $url, $parameters]);
 
 			curl_close($request);
 			return $response;

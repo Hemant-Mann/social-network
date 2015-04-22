@@ -51,6 +51,11 @@ namespace Framework {
         * @readwrite
         */
         protected $_defaultContentType = "text/html";
+
+        /**
+        * @read
+        */
+        protected $_name;
         
         protected function _getExceptionForImplementation($method) {
             return new Exception\Implementation("{$method} method not implemented");
@@ -60,7 +65,9 @@ namespace Framework {
             return new Exception\Argument("Invalid argument");
         }
 
-        public function render() {    
+        public function render() {
+            Events::fire("framework.controller.render.before", [$this->name]);
+
             $defaultContentType = $this->getDefaultContentType();
             $results = null;
             
@@ -90,15 +97,27 @@ namespace Framework {
             } catch (\Exception $e) {
                 throw new View\Exception\Renderer("Invalid layout/template syntax");
             }
+
+            Events::fire("framework.controller.render.after", [$this->name]);
+        }
+
+        public function getName() {
+            if (empty($this->_name)) {
+                $this->_name = get_class($this);
+            }
+            return $this->_name;
         }
 
         public function __destruct() {
+            Events::fire("framework.controller.destruct.before", [$this->name]);
             $this->render();
+            Events::fire("framework.controller.destruct.after", [$this->name]);
         }
 
         public function __construct($options = array()) {
             parent::__construct($options);
-            
+            Events::fire("framework.controller.construct.before", [$this->name]);
+
             if ($this->getWillRenderLayoutView()) {        
                 $defaultPath = $this->getDefaultPath();
                 $defaultLayout = $this->getDefaultLayout();
@@ -122,6 +141,8 @@ namespace Framework {
                 
                 $this->setActionView($view);
             }
+
+            Events::fire("framework.controller.construct.after", [$this->name]);
         } 
     }
 }

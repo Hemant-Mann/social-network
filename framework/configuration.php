@@ -21,10 +21,14 @@ namespace Framework {
         }
         
         public function initialize() {
+            Events::fire("framework.configuration.initialize.before", [$this->type, $this->options]);
+            
             if (!$this->type) {
                 throw new Exception\Argument("Invalid type");
             }
             
+            Events::fire("framework.configuration.initialize.after", [$this->type, $this->options]);
+
             switch ($this->type) {
                 case "ini": {
                     return new Configuration\Driver\Ini($this->options);

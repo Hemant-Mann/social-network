@@ -22,6 +22,8 @@ namespace Framework {
         }
         
         public function initialize() {
+            Events::fire("framework.session.initialize.before", [$this->type, $this->options]);
+
             if (!$this->type) {
                 $configuration = Registry::get("configuration");
                 
@@ -41,6 +43,8 @@ namespace Framework {
                 throw new Exception\Argument("Invalid type");
             }
             
+            Events::fire("framework.session.initialize.after", [$this->type, $this->options]);
+
             switch ($this->type) {
                 case "server": {
                     return new Session\Driver\Server($this->options);

@@ -5,9 +5,31 @@ define("DEBUG", TRUE);
 define("APP_PATH", dirname(dirname(__FILE__))); 
 
 try {
+    // imagine autoloader
+    
+    spl_autoload_register(function($class) {
+        $path = lcfirst(str_replace("\\", DIRECTORY_SEPARATOR, $class));
+        $file = APP_PATH."/application/libraries/{$path}.php";
+        
+        if (file_exists($file)) {
+            require_once $file;
+            return true;
+        }
+    });
+
 	// core
 	require("../framework/core.php");
 	Framework\Core::initialize();
+
+    // plugin
+    $path = APP_PATH."/application/plugins";
+    $iterator = new DirectoryIterator($path);
+    foreach ($iterator as $item) {
+        if (!$item->isDot() && $item->isDir()) {
+            include($path."/".$item->getFilename()."/initialize.php");
+            echo 'hello';
+        }
+    }
 
 	// configuration
 	$configuration = new Framework\Configuration(array(

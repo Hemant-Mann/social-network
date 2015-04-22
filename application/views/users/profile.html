@@ -1,6 +1,6 @@
 {include navigation.html}
 <h1>{echo $person->first} {echo $person->last}</h1>
-{script $file = $user->file}
+{script $file = $person->file}
 {if $file}<img src="/social-network/uploads/{echo $file->name}"/>{/if}
 <br />
 This is a profile page!

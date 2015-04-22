@@ -22,6 +22,8 @@ namespace Framework {
         }
         
         public function initialize() {
+            Events::fire("framework.database.initialize.before", [$this->type, $this->options]);
+            
             if (!$this->type) {
                 $configuration = Registry::get("configuration");
                 
@@ -40,7 +42,9 @@ namespace Framework {
             if (!$this->type) {
                 throw new Exception\Argument("Invalid type");
             }
-            
+
+            Events::fire("framework.database.initialize.after", [$this->type, $this->options]);
+
             switch ($this->type) {
                 case "mysql": {
                     return new Database\Connector\Mysql($this->options);

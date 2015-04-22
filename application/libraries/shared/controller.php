@@ -11,9 +11,10 @@ namespace Shared {
         public function __construct($options = array()) {
             parent::__construct($options);
             
+            // connect to database
             $database = Registry::get("database");
             $database->connect();
-
+            
             $session = Registry::get("session");
             $user = unserialize($session->get("user", null));
             $this->setUser($user);

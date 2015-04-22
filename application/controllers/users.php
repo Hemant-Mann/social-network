@@ -28,7 +28,7 @@ class Users extends Controller {
             $view->set("errors", NULL);
         }   
     }
-
+    
     public function login() {
         if (RequestMethods::post("login")) {
             $email = RequestMethods::post("email");
