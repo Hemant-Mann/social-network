@@ -19,35 +19,38 @@ class Home extends Controller {
         	);
 
         	$ids = [];
-        	foreach ($friends as $friend) {
-        		$ids[] = $friend->friend;
-        	}
+            if($friends) {
+                foreach ($friends as $friend) {
+                    $ids[] = $friend->friend;
+                }
 
-        	$findMessages = Message::all([
-	        		"user in ?" => $ids,
-	        		"live = ?" => true,
-	        		"deleted = ?" => false
-        		],["*"], "created", "asc"
-        	);
+            	$findMessages = Message::all([
+    	        		"user in ?" => $ids,
+    	        		"live = ?" => true,
+    	        		"deleted = ?" => false
+            		],["*"], "created", "asc"
+            	);
 
-            $messages = [];
-            foreach ($findMessages as $msg) {
-                 $user = User::first([
-                        "id = ?" => $msg->user
-                    ], ["first", "last"]
-                );
+                $messages = [];
+                foreach ($findMessages as $msg) {
+                     $user = User::first([
+                            "id = ?" => $msg->user
+                        ], ["first", "last"]
+                    );
 
-                 $messages[] = [
-                    "id" => $msg->id,
-                    "user" => $msg->user,
-                    "by" => $user->first. " ". $user->last,
-                    "body" => $msg->body,
-                    "created" => $msg->created,
-                    "modified" => $msg->modified
-                 ];
+                     $messages[] = [
+                        "id" => $msg->id,
+                        "user" => $msg->user,
+                        "by" => $user->first. " ". $user->last,
+                        "body" => $msg->body,
+                        "created" => $msg->created,
+                        "modified" => $msg->modified
+                     ];
+                }
+                $view->set("messages", ArrayMethods::toObject($messages));
+            } else {
+                $view->set("messages", null);    
             }
-
-            $view->set("messages", ArrayMethods::toObject($messages));
         }
     }
 }
