@@ -98,7 +98,7 @@ class Files extends Controller {
             if ($filename && $extension) {
                 $thumbnail = "{$filename}-{$width}x{$height}.{$extension}";
                 
-                if (!file_exists("{$path}/{$thumbnail}")) {
+                if (!file_exists("{$path}/thumbnails/{$thumbnail}")) {
                     $imagine = new Imagine\Gd\Imagine();
                     
                     $size = new Imagine\Image\Box($width, $height);
@@ -107,14 +107,14 @@ class Files extends Controller {
                     $imagine
                         ->open("{$path}/{$name}")
                         ->thumbnail($size, $mode)
-                        ->save("{$path}/{$thumbnail}");
+                        ->save("{$path}/thumbnails/{$thumbnail}");
                 }
                     
-                header("Location: /social-network/uploads/{$thumbnail}");
+                header("Location: /social-network/public/uploads/thumbnails/{$thumbnail}");
                 exit();
             }
             
-            header("Location: /social-network/uploads/{$name}");
+            header("Location: /social-network/public/uploads/thumbnails/{$name}");
             exit();
 		}
 	}
